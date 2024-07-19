@@ -121,17 +121,18 @@ impl<T: InputType, U: OutputBuckets<T::RequiredDataType>, O: Optimiser> Trainer<
             let end = if let Some(QuantiseInfo { start: next_start, .. }) = qiter.peek() { *next_start } else { size };
 
             for i in start..end {
-                let qf = (f64::from(val) * f64::from(buf[i])).trunc();
-                let q = qf as i16;
-                if f64::from(q) != qf {
-                    println!("================= WARNING ================");
-                    println!("   An error occured during quantisation:  ");
+                let qf = (f64::from(val) * f64::from(buf[i])).round();
+
+                if qf < i16::MIN as f64 || qf > i16::MAX as f64 {
+                    println!("================= WARNING =================");
+                    println!("   An error occurred during quantisation:  ");
                     println!("     > Cannot convert \"{qf:.0}\"");
-                    println!("   You will need to quantise manually.    ");
-                    println!("==========================================");
+                    println!("   You will need to quantise manually.     ");
+                    println!("===========================================");
                     return;
                 }
-                qbuf[i] = q;
+
+                qbuf[i] = qf as i16;
             }
         }
 
