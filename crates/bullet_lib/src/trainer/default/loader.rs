@@ -2,12 +2,14 @@ mod direct;
 mod montybinpack;
 mod rng;
 mod sfbinpack;
+mod stoatpack;
 mod text;
 
 use bulletformat::BulletFormat;
 pub use direct::{CanBeDirectlySequentiallyLoaded, DirectSequentialDataLoader};
 pub use montybinpack::MontyBinpackLoader;
 pub use sfbinpack::SfBinpackLoader;
+pub use stoatpack::StoatpackLoader;
 pub use text::InMemoryTextLoader;
 
 use super::{inputs::SparseInputType, outputs::OutputBuckets};
@@ -169,11 +171,16 @@ impl<I: SparseInputType, O: OutputBuckets<I::RequiredDataType>> DefaultDataPrepa
                             let mut j = 0;
                             let sparse_offset = max_active * i;
 
+                            println!("batch size: {}", prep.batch_size);
+
                             inp.map_features(pos, |our, opp| {
                                 assert!(
                                     our < input_size && opp < input_size,
                                     "Input feature index exceeded input size!"
                                 );
+
+                                println!("sparse_offset: {sparse_offset}");
+                                println!("j: {j}");
 
                                 stm_chunk[sparse_offset + j] = our as i32;
                                 nstm_chunk[sparse_offset + j] = opp as i32;

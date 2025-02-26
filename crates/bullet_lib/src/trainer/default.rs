@@ -14,6 +14,7 @@ pub mod formats {
     pub use bulletformat;
     pub use montyformat;
     pub use sfbinpack;
+    pub use stoatformat;
 }
 
 pub use super::save::{Layout, QuantTarget, SavedFormat};
@@ -51,6 +52,7 @@ unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::ChessBoard {}
 unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::AtaxxBoard {}
 unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::chess::CudADFormat {}
 unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::chess::MarlinFormat {}
+unsafe impl CanBeDirectlySequentiallyLoaded for stoatformat::ShogiBoard {}
 
 #[derive(Clone, Copy)]
 pub struct AdditionalTrainerInputs {

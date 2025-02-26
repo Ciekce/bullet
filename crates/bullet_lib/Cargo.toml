@@ -20,6 +20,7 @@ bullet_core = { workspace = true }
 bulletformat = { workspace = true }
 montyformat = { workspace = true }
 sfbinpack = "0.2.0"
+stoatformat = { path = "L:/Dev/CLionProjects/Rust/stoatformat" }
 
 [[example]]
 name = "advanced"
@@ -48,3 +49,7 @@ path = "../../examples/simple.rs"
 [[example]]
 name = "testnet"
 path = "../../examples/testnet.rs"
+
+[[example]]
+name = "stoat"
+path = "../../examples/stoat.rs"

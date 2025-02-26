@@ -2,6 +2,7 @@ mod ataxx147;
 mod chess768;
 mod chess_buckets;
 mod chess_buckets_mk;
+mod shogi2344;
 mod factorised;
 
 #[allow(deprecated)]
@@ -13,6 +14,7 @@ pub use ataxx147::{Ataxx147, Ataxx98};
 pub use chess768::Chess768;
 pub use chess_buckets::{ChessBuckets, ChessBucketsMirrored};
 pub use chess_buckets_mk::{ChessBucketsMergedKings, ChessBucketsMergedKingsMirrored};
+pub use shogi2344::Shogi2344;
 pub use factorised::{Factorised, Factorises};
 
 #[allow(deprecated)]
