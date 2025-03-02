@@ -34,11 +34,10 @@ impl SparseInputType for Shogi2344 {
                 let pc = usize::from(piece >> 1);
                 let offset = [0, 18, 22, 26, 30, 34, 36][pc];
 
-                for i in 0..count {
-                    let stm = [1134, 2306][c] + offset + i;
-                    let ntm = [2306, 1134][c] + offset + i;
-                    f(stm, ntm);
-                }
+                // -1 because count is 1-based
+                let stm = [1133, 2305][c] + offset + count;
+                let ntm = [2305, 1133][c] + offset + count;
+                f(stm, ntm);
             }
         }
     }

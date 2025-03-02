@@ -171,16 +171,11 @@ impl<I: SparseInputType, O: OutputBuckets<I::RequiredDataType>> DefaultDataPrepa
                             let mut j = 0;
                             let sparse_offset = max_active * i;
 
-                            println!("batch size: {}", prep.batch_size);
-
                             inp.map_features(pos, |our, opp| {
                                 assert!(
                                     our < input_size && opp < input_size,
                                     "Input feature index exceeded input size!"
                                 );
-
-                                println!("sparse_offset: {sparse_offset}");
-                                println!("j: {j}");
 
                                 stm_chunk[sparse_offset + j] = our as i32;
                                 nstm_chunk[sparse_offset + j] = opp as i32;
