@@ -53,7 +53,7 @@ fn main() {
     let settings = LocalSettings { threads: 4, test_set: None, output_directory: "checkpoints", batch_queue_size: 64 };
 
     let data_loader = {
-        let file_path = "data.bin";
+        let file_path = "data.spk";
         let buffer_size_mb = 8192;
         let threads = 4;
         fn filter(pos: &Position, mv: Move, score: i16, _wdl: Outcome) -> bool {
