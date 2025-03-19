@@ -20,7 +20,7 @@ bullet_core = { workspace = true }
 bulletformat = { workspace = true }
 montyformat = { workspace = true }
 sfbinpack = "0.2.0"
-stoatformat = { path = "L:/Dev/CLionProjects/Rust/stoatformat" }
+stoatformat = { git = "https://github.com/Ciekce/stoatformat" }
 
 [[example]]
 name = "advanced"

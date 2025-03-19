@@ -9,8 +9,9 @@ use crate::default::loader::DataLoader;
 use super::rng::SimpleRand;
 
 use stoatformat::{
-    shogi::{shogimove::Move, position::Position},
-    FastDeserialise, stoatpack::Stoatpack, ShogiBoard, Outcome,
+    shogi::{position::Position, shogimove::Move},
+    stoatpack::Stoatpack,
+    FastDeserialise, Outcome, ShogiBoard,
 };
 
 #[derive(Clone)]

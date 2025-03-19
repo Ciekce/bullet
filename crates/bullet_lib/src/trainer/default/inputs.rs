@@ -2,8 +2,9 @@ mod ataxx147;
 mod chess768;
 mod chess_buckets;
 mod chess_buckets_mk;
-mod shogi2344;
 mod factorised;
+mod shogi2344;
+mod shogi_buckets;
 
 #[allow(deprecated)]
 mod legacy;
@@ -14,8 +15,9 @@ pub use ataxx147::{Ataxx147, Ataxx98};
 pub use chess768::Chess768;
 pub use chess_buckets::{ChessBuckets, ChessBucketsMirrored};
 pub use chess_buckets_mk::{ChessBucketsMergedKings, ChessBucketsMergedKingsMirrored};
-pub use shogi2344::Shogi2344;
 pub use factorised::{Factorised, Factorises};
+pub use shogi2344::{Shogi2344, Shogi2344Mirrored};
+pub use shogi_buckets::{ShogiBuckets, ShogiBucketsMirrored};
 
 #[allow(deprecated)]
 pub use legacy::InputType;
@@ -45,6 +47,20 @@ pub type ChessBucketsMergedKingsMirroredFactorised = Factorised<ChessBucketsMerg
 impl ChessBucketsMergedKingsMirroredFactorised {
     pub fn new(buckets: [usize; 32]) -> Self {
         Self::from_parts(ChessBucketsMergedKingsMirrored::new(buckets), Chess768)
+    }
+}
+
+pub type ShogiBucketsFactorised = Factorised<ShogiBuckets, Shogi2344>;
+impl ShogiBucketsFactorised {
+    pub fn new(buckets: [usize; 81]) -> Self {
+        Self::from_parts(ShogiBuckets::new(buckets), Shogi2344)
+    }
+}
+
+pub type ShogiBucketsMirroredFactorised = Factorised<ShogiBucketsMirrored, Shogi2344>;
+impl ShogiBucketsMirroredFactorised {
+    pub fn new(buckets: [usize; 45]) -> Self {
+        Self::from_parts(ShogiBucketsMirrored::new(buckets), Shogi2344)
     }
 }
 
