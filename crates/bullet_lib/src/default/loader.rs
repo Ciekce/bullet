@@ -2,6 +2,7 @@ mod direct;
 mod montybinpack;
 mod rng;
 mod sfbinpack;
+mod stoatpack;
 mod text;
 pub mod viribinpack;
 
@@ -10,6 +11,7 @@ use bulletformat::BulletFormat;
 pub use direct::{CanBeDirectlySequentiallyLoaded, DirectSequentialDataLoader};
 pub use montybinpack::MontyBinpackLoader;
 pub use sfbinpack::SfBinpackLoader;
+pub use stoatpack::StoatpackLoader;
 pub use text::InMemoryTextLoader;
 pub use viribinpack::ViriBinpackLoader;
 

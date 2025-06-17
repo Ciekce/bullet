@@ -97,6 +97,7 @@ dependencies = [
  "bulletformat",
  "montyformat",
  "sfbinpack",
+ "stoatformat",
  "viriformat",
 ]
 
@@ -379,6 +380,14 @@ name = "shlex"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
+
+[[package]]
+name = "stoatformat"
+version = "0.1.0"
+source = "git+https://github.com/Ciekce/stoatformat#26f4fdc6ea791dd3a3fa78d097b2396be61bdc0b"
+dependencies = [
+ "bulletformat",
+]
 
 [[package]]
 name = "strsim"

@@ -25,6 +25,7 @@ bulletformat = { workspace = true }
 montyformat = { workspace = true }
 sfbinpack = "0.4.1"
 viriformat = "2.0.0"
+stoatformat = { git = "https://github.com/Ciekce/stoatformat" }
 
 [[example]]
 name = "advanced"
@@ -65,3 +66,7 @@ path = "../../examples/progression/3_input_buckets.rs"
 [[example]]
 name = "4_multi_layer"
 path = "../../examples/progression/4_multi_layer.rs"
+
+[[example]]
+name = "stoat"
+path = "../../examples/stoat.rs"
