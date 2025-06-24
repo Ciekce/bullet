@@ -1,6 +1,7 @@
+#![allow(deprecated)]
+
 mod builder;
 pub mod gamerunner;
-pub mod loader;
 pub mod testing;
 
 /// Re-exports crates for certain file formats (e.g. Bulletformat)
@@ -11,10 +12,13 @@ pub mod formats {
     pub use stoatformat;
 }
 
-pub use crate::game::{inputs, outputs};
+pub use crate::{
+    game::{inputs, outputs},
+    value::loader,
+};
 pub use builder::{Loss, TrainerBuilder};
 
-use loader::{
+use crate::value::loader::{
     load_into_graph, CanBeDirectlySequentiallyLoaded, DataLoader, DefaultDataLoader, DefaultDataPreparer,
     DirectSequentialDataLoader, LoadableDataType, B,
 };
@@ -42,12 +46,6 @@ use bullet_core::{
     graph::{Graph, Node},
     optimiser::{Optimiser, OptimiserState},
 };
-
-unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::ChessBoard {}
-unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::AtaxxBoard {}
-unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::chess::CudADFormat {}
-unsafe impl CanBeDirectlySequentiallyLoaded for bulletformat::chess::MarlinFormat {}
-unsafe impl CanBeDirectlySequentiallyLoaded for stoatformat::ShogiBoard {}
 
 #[derive(Clone, Copy)]
 pub struct AdditionalTrainerInputs {
