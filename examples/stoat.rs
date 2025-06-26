@@ -26,7 +26,7 @@ fn main() {
 
     const SUPERBATCHES: usize = 200;
 
-    const L1_SIZE: usize = 512;
+    const L1_SIZE: usize = 1024;
     const L2_SIZE: usize = 16;
     const L3_SIZE: usize = 32;
 
@@ -34,8 +34,10 @@ fn main() {
     const OUTPUT_BUCKETS: usize = 1;
 
     let inputs = Shogi2344Mirrored;
+    //let outputs = outputs::Single;
 
     let save_format = [
+        //SavedFormat::id("ftf"), // factoriser
         SavedFormat::id("ftw"),
         SavedFormat::id("ftb"),
         SavedFormat::id("l1w"),
@@ -49,21 +51,29 @@ fn main() {
     let mut trainer = ValueTrainerBuilder::default()
         .dual_perspective()
         .inputs(inputs)
-        .optimiser(optimiser::AdamW)
+        //.output_buckets(outputs)
+        .optimiser(optimiser::Ranger)
         .save_format(&save_format)
         .loss_fn(|output, targets| output.sigmoid().squared_error(targets))
         .build(|builder, stm, ntm| {
             let mut ft = builder.new_affine("ft", inputs.num_inputs(), L1_SIZE);
 
+            //let ftf = builder.new_weights("ftf", Shape::new(L1_SIZE, 2344), InitSettings::Zeroed);
+            //let expanded = ftf.repeat(INPUT_BUCKETS);
+
+            //ft.weights = ft.weights + expanded;
+
             let l1 = builder.new_affine("l1", L1_SIZE, OUTPUT_BUCKETS * L2_SIZE);
-            let l2 = builder.new_affine("l2", L2_SIZE, OUTPUT_BUCKETS * L3_SIZE);
+            let l2 = builder.new_affine("l2", L2_SIZE * 2, OUTPUT_BUCKETS * L3_SIZE);
             let l3 = builder.new_affine("l3", L3_SIZE, OUTPUT_BUCKETS);
 
             let stm_subnet = ft.forward(stm).crelu().pairwise_mul();
             let ntm_subnet = ft.forward(ntm).crelu().pairwise_mul();
             let mut out = stm_subnet.concat(ntm_subnet);
 
-            out = l1.forward(out).screlu();
+            out = l1.forward(out);
+            out = out.concat(out.abs_pow(2.0)).crelu();
+
             out = l2.forward(out).crelu();
             out = l3.forward(out);
 
@@ -81,7 +91,7 @@ fn main() {
             start_superbatch: 1,
             end_superbatch: SUPERBATCHES,
         },
-        wdl_scheduler: wdl::LinearWDL { start: 0.0, end: 0.3 },
+        wdl_scheduler: wdl::LinearWDL { start: 0.1, end: 0.4 },
         lr_scheduler: lr::CosineDecayLR {
             initial_lr: 0.001,
             final_lr: 0.000027,
@@ -90,16 +100,27 @@ fn main() {
         save_rate: SUPERBATCHES,
     };
 
-    let default_optimiser_params = optimiser::AdamWParams { min_weight: -1.98, max_weight: 1.98, ..Default::default() };
+    let default_optimiser_params = optimiser::RangerParams { min_weight: -1.98, max_weight: 1.98, ..Default::default() };
+
+    /*
+    let ftw_optimiser_params = optimiser::RangerParams {
+        min_weight: -0.99,
+        max_weight: 0.99,
+        ..default_optimiser_params
+    };
+    */
 
     let l1w_clip = 0.99 * 255.0 * 255.0 / (256.0 * 256.0);
 
     let l1w_optimiser_params =
-        optimiser::AdamWParams { min_weight: -l1w_clip, max_weight: l1w_clip, ..default_optimiser_params };
+        optimiser::RangerParams { min_weight: -l1w_clip, max_weight: l1w_clip, ..default_optimiser_params };
 
-    trainer.set_optimiser_params(default_optimiser_params);
+    trainer.optimiser.set_params(default_optimiser_params);
 
-    trainer.optimiser_mut().set_params_for_weight("l1w", l1w_optimiser_params);
+    //trainer.optimiser.set_params_for_weight("ftw", ftw_optimiser_params);
+    //trainer.optimiser.set_params_for_weight("ftf", ftw_optimiser_params); // factoriser
+
+    trainer.optimiser.set_params_for_weight("l1w", l1w_optimiser_params);
 
     let settings = LocalSettings { threads: 4, test_set: None, output_directory: "checkpoints", batch_queue_size: 64 };
 
@@ -109,6 +130,7 @@ fn main() {
         let threads = 4;
         fn filter(pos: &Position, mv: Move, score: i16, _wdl: Outcome) -> bool {
             true
+                //&& pos.ply_count() > 40
                 && !pos.is_capture(mv)
                 && score.unsigned_abs() < 25000
                 && !pos.is_in_check()
