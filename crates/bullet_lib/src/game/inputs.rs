@@ -5,6 +5,7 @@ mod chess_buckets;
 mod chess_buckets_mk;
 mod factorised;
 mod shogi2344;
+mod shogi1696;
 mod shogi_buckets;
 
 #[allow(deprecated)]
@@ -16,6 +17,7 @@ pub use chess768::Chess768;
 pub use chess_buckets::{ChessBuckets, ChessBucketsMirrored};
 pub use factorised::{Factorised, Factorises};
 pub use shogi2344::{Shogi2344, Shogi2344Mirrored};
+pub use shogi1696::{Shogi1696, Shogi1696Mirrored};
 pub use shogi_buckets::{ShogiBuckets, ShogiBucketsMirrored};
 
 #[allow(deprecated)]
