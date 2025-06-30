@@ -33,7 +33,7 @@ fn main() {
     const INPUT_BUCKETS: usize = 1;
     const OUTPUT_BUCKETS: usize = 1;
 
-    let inputs = Shogi2344Mirrored;
+    let inputs = Shogi1696Mirrored;
     //let outputs = outputs::Single;
 
     let save_format = [
@@ -92,15 +92,12 @@ fn main() {
             end_superbatch: SUPERBATCHES,
         },
         wdl_scheduler: wdl::LinearWDL { start: 0.1, end: 0.4 },
-        lr_scheduler: lr::CosineDecayLR {
-            initial_lr: 0.001,
-            final_lr: 0.000027,
-            final_superbatch: SUPERBATCHES,
-        },
+        lr_scheduler: lr::CosineDecayLR { initial_lr: 0.001, final_lr: 0.000027, final_superbatch: SUPERBATCHES },
         save_rate: SUPERBATCHES,
     };
 
-    let default_optimiser_params = optimiser::RangerParams { min_weight: -1.98, max_weight: 1.98, ..Default::default() };
+    let default_optimiser_params =
+        optimiser::RangerParams { min_weight: -1.98, max_weight: 1.98, ..Default::default() };
 
     /*
     let ftw_optimiser_params = optimiser::RangerParams {
