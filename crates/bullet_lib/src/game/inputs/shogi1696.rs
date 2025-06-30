@@ -7,7 +7,7 @@ pub struct Shogi1696;
 
 impl Shogi1696 {
     fn map_psqt_feature(piece: u8, stm_sq: u8, ntm_sq: u8) -> (usize, usize) {
-        const PIECE_MAP: [usize; 14] = [0, 4, 1, 2, 4, 4, 3, 4, 4, 5, 6, 7, 8, 9,];
+        const PIECE_MAP: [usize; 14] = [0, 4, 1, 2, 4, 4, 3, 4, 4, 5, 6, 7, 8, 9];
 
         let c = usize::from(piece & 1 > 0);
         let pc = 81 * PIECE_MAP[(piece >> 1) as usize];
